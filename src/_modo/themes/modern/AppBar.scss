@@ -1,0 +1,68 @@
+@import "vars";
+
+.mdo-fullscreen{
+  body{
+	overflow: hidden;
+  }
+}
+
+.mdo-fullscreen #root {
+  height: 100vh;
+  display: grid;
+  grid-gap: 0;
+  grid-template-columns: auto;
+  grid-template-rows: 64px auto;
+
+  .mdo-appbar{
+	grid-row: 1;
+  }
+
+  .mdo-appContent{
+	margin: 0;
+	grid-row: 2;
+	overflow-y: auto;
+	background: #e8eaee;
+  }
+}
+
+.mdo-appbar {
+  background: $primary;
+  color: $inverseTextColor;
+  padding: $padding * 0.5 $padding;
+  position: relative;
+  box-shadow: 0 0 5px rgba(0, 0, 0, .5);
+  margin: 0;
+
+  &.mdo-fixed {
+	position: sticky;
+	top: 0;
+	z-index: 2;
+  }
+
+  & > div {
+	display: inline-flex;
+	align-items: center;
+	flex: 1 1 auto;
+	height: 3 * $padding;
+	width: 100%;
+
+	& > .mdo-grid {
+	  width: 100%;
+	}
+  }
+
+  h1, h2, h3 {
+	display: inline-block;
+	margin: 0;
+	font-size: 1.3rem;
+  }
+
+  .mdo-toolbar {
+	margin-top: 5px;
+  }
+
+  .mdo-button {
+	display: inline-block;
+	color: #fff;
+  }
+}

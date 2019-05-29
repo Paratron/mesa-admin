@@ -1,0 +1,19 @@
+@import "_vars";
+
+.mdo-grid {
+  &.mdo-padded {
+    .mdo-grid-cell{
+      padding: $padding;
+    }
+  }
+}
+
+.mdo-grid-frame{
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+.mdo-grid-cell + .mdo-grid-cell{
+  margin-top: 0;
+}

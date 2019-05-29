@@ -1,0 +1,66 @@
+
+.small-order-1 {
+  order: 1;
+}
+
+.small-order-2 {
+  order: 2;
+}
+
+.small-order-3 {
+  order: 3;
+}
+
+.small-order-4 {
+  order: 4;
+}
+
+.small-order-5 {
+  order: 5;
+}
+
+.small-order-6 {
+  order: 6;
+}
+
+@media print, screen and (min-width: 40em) {
+  .medium-order-1 {
+	order: 1;
+  }
+  .medium-order-2 {
+	order: 2;
+  }
+  .medium-order-3 {
+	order: 3;
+  }
+  .medium-order-4 {
+	order: 4;
+  }
+  .medium-order-5 {
+	order: 5;
+  }
+  .medium-order-6 {
+	order: 6;
+  }
+}
+
+@media print, screen and (min-width: 64em) {
+  .large-order-1 {
+	order: 1;
+  }
+  .large-order-2 {
+	order: 2;
+  }
+  .large-order-3 {
+	order: 3;
+  }
+  .large-order-4 {
+	order: 4;
+  }
+  .large-order-5 {
+	order: 5;
+  }
+  .large-order-6 {
+	order: 6;
+  }
+}

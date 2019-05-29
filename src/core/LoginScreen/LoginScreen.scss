@@ -1,0 +1,37 @@
+.mdo-centered{
+  padding-top: 40px;
+}
+
+.mdo-card.authCard{
+  display: block;
+  padding: 48px 40px 36px;
+  width: 450px;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14),0 3px 1px -2px rgba(0,0,0,0.12),0 1px 5px 0 rgba(0,0,0,0.2);
+  border-radius: 8px;
+  margin: 40px auto;
+  transition: opacity .3s;
+
+  &.disabled{
+    opacity: .2;
+    pointer-events: none;
+  }
+}
+
+.connectionMessage{
+  text-align: center;
+  color: darkred;
+
+  .mdo-icon{
+    vertical-align: middle;
+    margin-right: 10px;
+    position: relative;
+    top: -2px;
+  }
+}
+
+.versionLabel{
+  text-align: center;
+  font-size: .8rem;
+  color: #ccc;
+  margin-top: -30px;
+}

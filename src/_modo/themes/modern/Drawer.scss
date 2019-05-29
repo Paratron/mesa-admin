@@ -1,0 +1,60 @@
+@import "vars";
+
+.mdo-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  pointer-events: none;
+  z-index: 3;
+
+
+  &:before {
+	content: "";
+	display: block;
+	background: rgba(0, 0, 0, .5);
+	opacity: 0;
+	transition: opacity .1s;
+	width: 100vw;
+	height: 100vh;
+  }
+
+  .mdo-drawer-content {
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: #fff;
+	height: 100vh;
+	width: 280px;
+	max-width: 280px;
+	padding: $padding;
+	border-right: $alternateBackgroundAccent solid 1px;
+	box-shadow: 0 0 40px rgba(0, 0, 0, .3);
+	transform: translateX(-100%);
+	transition: transform .3s;
+  }
+
+  &.mdo-open {
+	pointer-events: all;
+
+	&:before{
+	  opacity: 1;
+	}
+
+	.mdo-drawer-content {
+	  transform: translateX(0);
+	}
+  }
+
+  h3{
+	font-size: 1rem;
+	font-weight: normal;
+	margin-top: -$padding;
+	margin-left: -$padding;
+	margin-right: -$padding;
+	padding: $padding;
+	border-bottom: $alternateBackgroundAccent solid 1px;
+  }
+}
