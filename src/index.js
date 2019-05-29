@@ -1,12 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+
+import App from 'src/core/App';
+
+import 'src/_modo/modo.scss';
+import 'src/_modo/themes/modern.scss';
+
+import {defineLocalization} from "localize-ui";
+import lang from 'src/_locals/de-de';
+
+defineLocalization(lang);
 
 ReactDOM.render(<App />, document.getElementById('root'));
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
