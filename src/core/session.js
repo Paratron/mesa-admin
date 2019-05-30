@@ -22,8 +22,8 @@ if (userCache) {
 if (sessionUser && sessionUser.token) {
 	const token = sessionUser.token;
 	sessionUser = null;
-	rpc.emit('user.auth', {token}, (err, data) => {
-		if (err) {
+	rpc.emit('user.auth', {token, admin: true}, (err, data) => {
+		if (err || !data.discoveryData) {
 			sessionStorage.removeItem('userCache');
 			for (let i = 0; i < hookUpdaters.length; i++) {
 				hookUpdaters[i](pointer);
@@ -39,9 +39,14 @@ if (sessionUser && sessionUser.token) {
 }
 
 const authenticate = ({mail, password}) => new Promise((resolve, reject) => {
-	rpc.emit('user.auth', {mail, password}, (err, data) => {
+	rpc.emit('user.auth', {mail, password, admin: true}, (err, data) => {
 		if (err) {
 			reject(err);
+			return;
+		}
+
+		if (!data.discoveryData) {
+			reject({code: 'MAD', message: ''});
 			return;
 		}
 

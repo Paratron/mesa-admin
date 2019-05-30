@@ -1,5 +1,7 @@
 import {useState, useEffect} from 'react';
 
+/* eslint-disable react-hooks/rules-of-hooks */
+
 /**
  * This is a buffer for the hook data objects. They are identified by data-ids that
  * are made up from type and id. So for example 'article:1'. If multiple hooks tap into
@@ -45,7 +47,7 @@ const fetchData = (type, id) => {
 	const fetchPromise = responders.fetch.find(cb => cb(type, id));
 
 	if(fetchPromise === undefined){
-		throw new Error('No fetch handler for this type/id combination found');
+		throw new Error(`No fetch handler for ${type}[${id || ''}] found`);
 	}
 
 	return fetchPromise;
@@ -93,7 +95,7 @@ export const createHook = (type, hookName) => {
 					registeredComponents[dataId].splice(index, 1);
 				}
 			};
-		}, [setUpdate]);
+		}, [dataId, setUpdate]);
 
 		if (hookStore[dataId]) {
 			return hookStore[dataId];
@@ -120,7 +122,7 @@ export const createHook = (type, hookName) => {
 				const updatePromise = responders.update.find(cb => cb(type, id, newData));
 
 				if (updatePromise === undefined) {
-					throw new Error('No update handler for this type/id combination found.');
+					throw new Error(`No update handler for ${type}[${id}] found.`);
 				}
 
 				updatePromise.then(resolve).catch(reject);
@@ -133,7 +135,7 @@ export const createHook = (type, hookName) => {
 				const removePromise = responders.remove.find(cb => cb(type, id));
 
 				if (removePromise === undefined) {
-					throw new Error('No remove handler for this type/id combination found.');
+					throw new Error(`No remove handler for ${type}[${id}] found.`);
 				}
 
 				removePromise.then(resolve).catch(reject);

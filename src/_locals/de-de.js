@@ -10,7 +10,9 @@ const lang = {
 			version: 'Version: {{version}}',
 			errMissingConnection: 'Es besteht keine Verbindung zum Backend!',
 			errPassword: 'Falsches Passwort',
-			errMail: 'Unbekannte E-Mail Adresse'
+			errMail: 'Unbekannte E-Mail Adresse',
+			errMissingDiscovery: 'Administrativer Zugriff im Backend ggf. nicht aktiviert.',
+			errNoAdmin: 'Kein administrativer Zugriff für diesen Nutzer möglich'
 		},
 		mainMenu: {
 			user: 'Benutzer'

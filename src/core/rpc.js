@@ -1,5 +1,6 @@
 import ioClient from 'socket.io-client';
 import React from 'react';
+import {registerFetchResponder} from "src/_datahooks";
 
 const ioAddress = `//${window.location.hostname}`
 	+ (
@@ -86,5 +87,26 @@ const rpc = {
 		listeners[event].push(cb);
 	}
 };
+
+registerFetchResponder((type, id) => new Promise((resolve, reject) => {
+	if(!id){
+		rpc.emit(`${type}.list`, null, (result) => {
+			if(result.ok){
+				resolve(result.ok);
+				return;
+			}
+			reject(result.error);
+		});
+		return;
+	}
+
+	rpc.emit(`${type}.fetch`, {id}, (result) => {
+		if(result.ok){
+			resolve(result.ok);
+			return;
+		}
+		reject(result.error);
+	});
+}));
 
 export default rpc;

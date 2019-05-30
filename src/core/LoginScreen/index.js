@@ -34,11 +34,6 @@ const propTypes = {
 	errorPassword: PropTypes.string,
 };
 
-const initMail = () => {
-	const win = window.open('mailto:hello@wearekiss.com?subject=PSM Zugang');
-	setTimeout(() => win.close(), 100);
-};
-
 /**
  * The login screen will provide a card, centered on the screen and invites the user
  * to login via mail and password.
@@ -62,14 +57,29 @@ const LoginScreen = ({onLogin}) => {
 		setLastLoginMail(data.mail);
 		setErrors({});
 		onLogin(data).catch(e => {
-			if (e.code === 'L06') {
-				setErrors({
-					password: __('errPassword')
-				});
-			} else {
-				setErrors({
-					mail: __('errMail')
-				});
+			switch (e.code) {
+				case 'L06': {
+					setErrors({
+						password: __('errPassword')
+					});
+					break;
+				}
+				case 'MAD': {
+					setErrors({
+						mail: __('errMissingDiscovery')
+					});
+					break;
+				}
+				case 'RAD': {
+					setErrors({
+						mail: __('errNoAdmin')
+					});
+					break;
+				}
+				default:
+					setErrors({
+						mail: __('errMail')
+					});
 			}
 		});
 	};
@@ -100,7 +110,6 @@ const LoginScreen = ({onLogin}) => {
 							</p>
 
 							<ButtonArea>
-								<Button type={Button.TYPES.MINIMAL} onClick={initMail}>{__('btnAdmin')}</Button>
 								<Button type={Button.TYPES.PRIMARY} onClick={doSubmit}>{__('btnLogin')}</Button>
 							</ButtonArea>
 						</React.Fragment>
