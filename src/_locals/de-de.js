@@ -18,7 +18,11 @@ const lang = {
 			user: 'Benutzer'
 		},
 		overview: {
-			title: 'Übersicht: {{name}}'
+			title: 'Übersicht: {{name}}',
+			fabAddLabel: '{{title}} erstellen',
+			loading: 'Übersicht wird geladen...',
+			loadingError: 'Beim Laden der Übersicht ist ein Fehler aufgetreten.',
+			noItems: 'Noch keine Elemente vorhanden'
 		},
 		fieldNames: {
 			id: 'ID',

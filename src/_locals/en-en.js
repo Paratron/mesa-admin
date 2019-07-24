@@ -18,7 +18,11 @@ const lang = {
 			user: 'User'
 		},
 		overview: {
-			title: 'Overview: {{name}}'
+			title: 'Overview: {{name}}',
+			fabAddLabel: 'Create new {{title}}',
+			loading: 'Loading overview...',
+			loadingError: 'An error occurred during data fetching',
+			noItems: 'No items so far'
 		},
 		fieldNames: {
 			id: 'ID',

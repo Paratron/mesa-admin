@@ -17,6 +17,20 @@ let hookStore = {};
  */
 let registeredComponents = {};
 
+const addComponent = (dataId, updater) => {
+	if (!registeredComponents[dataId]) {
+		registeredComponents[dataId] = new Set();
+	}
+	registeredComponents[dataId].add(updater);
+};
+
+const removeComponent = (dataId, updater) => {
+	if (!registeredComponents[dataId]) {
+		return;
+	}
+	registeredComponents[dataId].delete(updater);
+};
+
 /**
  * Will trigger a render of all components with the given data-id.
  * @param {string} dataId
@@ -44,9 +58,14 @@ const responders = {
  * @param {string} id
  */
 const fetchData = (type, id) => {
-	const fetchPromise = responders.fetch.find(cb => cb(type, id));
+	const fetchPromise = responders.fetch.reduce((acc, cb) => {
+		if (acc) {
+			return acc;
+		}
+		return cb(type, id);
+	}, null);
 
-	if(fetchPromise === undefined){
+	if (fetchPromise === undefined) {
 		throw new Error(`No fetch handler for ${type}[${id || ''}] found`);
 	}
 
@@ -81,20 +100,21 @@ export const createHook = (type, hookName) => {
 	 * @returns {array} [*, {loading: true, error: false}, updateFunction(newData):Promise, removeFunction:Promise]
 	 */
 	const hookFunction = (id) => {
-		const dataId = `${type}:${id}`;
+		const dataId = `${type}:${id || '-'}`;
 		const [, setUpdate] = useState(0);
+		let performUpdate = null;
 
 		useEffect(() => {
-			if (!registeredComponents[dataId]) {
-				registeredComponents[dataId] = [];
+			addComponent(dataId, setUpdate);
+
+			if (performUpdate === true) {
+				setUpdate(Date.now());
 			}
-			registeredComponents[dataId].push(setUpdate);
-			return () => {
-				const index = registeredComponents[dataId].indexOf(setUpdate);
-				if (index !== -1) {
-					registeredComponents[dataId].splice(index, 1);
-				}
-			};
+
+			// eslint-disable-next-line
+			performUpdate = false;
+
+			return () => removeComponent(dataId, setUpdate);
 		}, [dataId, setUpdate]);
 
 		if (hookStore[dataId]) {
@@ -118,7 +138,7 @@ export const createHook = (type, hookName) => {
 			 * @param {*} newData
 			 * @returns {Promise<any>}
 			 */
-			(newData) => new Promise((resolve, reject) => {
+				(newData) => new Promise((resolve, reject) => {
 				const updatePromise = responders.update.find(cb => cb(type, id, newData));
 
 				if (updatePromise === undefined) {
@@ -131,7 +151,7 @@ export const createHook = (type, hookName) => {
 			 * Calling this function triggers a remove request.
 			 * @returns {Promise<any>}
 			 */
-			() => new Promise((resolve, reject) => {
+				() => new Promise((resolve, reject) => {
 				const removePromise = responders.remove.find(cb => cb(type, id));
 
 				if (removePromise === undefined) {
@@ -143,6 +163,26 @@ export const createHook = (type, hookName) => {
 		];
 
 		hookStore[dataId] = hookData;
+
+		if ((fetchedData instanceof Promise)) {
+			fetchedData.then(result => {
+				hookData[0] = result;
+				hookData[1].loading = false;
+				hookData[1].error = false;
+				updateComponents(dataId);
+				if (performUpdate === null) {
+					performUpdate = true;
+				}
+			}).catch(error => {
+				hookData[0] = null;
+				hookData[1].loading = false;
+				hookData[1].error = error;
+				updateComponents(dataId);
+				if (performUpdate === null) {
+					performUpdate = true;
+				}
+			});
+		}
 
 		return hookData;
 	};
@@ -217,4 +257,5 @@ export const updateData = (type, id, data) => {
  * @param type
  * @param id
  */
-export const removeData = (type, id) => {};
+export const removeData = (type, id) => {
+};

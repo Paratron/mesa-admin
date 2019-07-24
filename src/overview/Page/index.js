@@ -84,17 +84,17 @@ const OverviewPage = ({dataKey}) => {
 	}
 
 	if(!content){
-		if(listItems.length === 0){
+		if(!listItems || listItems.length === 0){
 			content = <OverviewEmpty />;
 		} else {
-			content = <Table>{getTableDef(dataKey, declaration)}</Table>;
+			content = <Table data={listItems}>{getTableDef(dataKey, declaration)}</Table>;
 		}
 	}
 
 	return (
 		<GridFrame className="overviewPage">
 			<h3>{__('title', {name: declaration.title || dataKey})}</h3>
-			<FabButton icon="add" title={`${declaration.title || dataKey} hinzufügen`}/>
+			<FabButton icon="add" title={__('fabAddLabel', {title: declaration.title || dataKey})}/>
 			<Card>
 				{content}
 			</Card>

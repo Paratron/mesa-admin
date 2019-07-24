@@ -69,7 +69,10 @@ const rpc = {
 				return;
 			}
 
-			const err = response.error ? {code: response.error.substr(0,3), message: response.error.substr(5)} : undefined;
+			const err = response.error ? {
+				code: response.error.substr(0, 3),
+				message: response.error.substr(5)
+			} : undefined;
 			const data = response.ok;
 
 			cb.apply(socket, [err, data]);
@@ -89,23 +92,23 @@ const rpc = {
 };
 
 registerFetchResponder((type, id) => new Promise((resolve, reject) => {
-	if(!id){
-		rpc.emit(`${type}.list`, null, (result) => {
-			if(result.ok){
-				resolve(result.ok);
+	if (!id) {
+		rpc.emit(`${type}.list`, null, (err, data) => {
+			if (err) {
+				reject(err);
 				return;
 			}
-			reject(result.error);
+			resolve(data);
 		});
 		return;
 	}
 
-	rpc.emit(`${type}.fetch`, {id}, (result) => {
-		if(result.ok){
-			resolve(result.ok);
+	rpc.emit(`${type}.fetch`, {id}, (err, data) => {
+		if (err) {
+			reject(err);
 			return;
 		}
-		reject(result.error);
+		resolve(data);
 	});
 }));
 
